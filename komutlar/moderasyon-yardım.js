@@ -47,7 +47,7 @@ let yardım = new Discord.MessageEmbed()
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ['help','yardım'],
+  aliases: ['helpP','yardımM'],
   permLevel: 0
 };
 
