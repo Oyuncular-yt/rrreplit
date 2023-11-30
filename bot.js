@@ -420,7 +420,7 @@ client.on("ready", () => {
 client.on("message", (message) => {
   if (message.author.bot) return; // Botun kendi mesajlarını işleme
   if (message.content.startsWith(`${PREFIX}addstatus`)) {
-    if (message.author.id === '699050343425') {
+//    if (message.author.id === '699050343425') {
     // Özel durumu eklemek için komut
     const newStatus = message.content.slice(`${PREFIX}addstatus`.length).trim();
     customStatuses.push(newStatus);
@@ -435,7 +435,7 @@ client.on("message", (message) => {
       .join("\n\n");
     message.channel.send("Eklenen Özel Durumlar:\n\n" + statusList);
   } else if (message.content.startsWith(`${PREFIX}deletestatus`)) {
-    if (message.author.id === '699050343425') {
+  //  if (message.author.id === '699050343425') {
     // Özel durumu kaldırmak için komut
     const indexToRemove =
       parseInt(message.content.slice(`${PREFIX}deletestatus`.length).trim()) -
@@ -451,7 +451,7 @@ client.on("message", (message) => {
       message.channel.send("Geçersiz bir özel durum numarası girdiniz.");
     }
   } else if (message.content.startsWith(`${PREFIX}setactivity`)) {
-    if (message.author.id === '699050343425') {
+ //   if (message.author.id === '699050343425') {
     // Aktiviteyi değiştirmek için komut
     const args = message.content
       .slice(`${PREFIX}setactivity`.length)
@@ -499,7 +499,7 @@ client.on("message", (message) => {
       );
     }
   } else if (message.content.startsWith(`${PREFIX}setinterval`)) {
-    if (message.author.id === '699050343425') {
+ //   if (message.author.id === '699050343425') {
     // Özel durum değişim aralığını ayarlamak için komut
     const newInterval =
       parseInt(message.content.slice(`${PREFIX}setinterval`.length).trim()) *
@@ -519,10 +519,9 @@ client.on("message", (message) => {
     }
     }
   }
-  }
-    }
-  }
-});
+  
+    
+  );
 
 function setCustomStatus() {
   if (customStatuses.length > 0) {
@@ -553,25 +552,24 @@ function changeStatus() {
 //
 //client.on("message", message => {
 //    if (message.channel.type === "dm" && !message.author.bot) {
-//        messageCounter++;
+//       messageCounter++;
 //        messageLog.set(messageCounter, {
 //            author: message.author,
 //            content: message.content
 //        });
-//        client.channels.cache.get("1077616626649800829").send(`Sıra numarası: **${messageCounter}**\nGönderen: **${message.author.tag}.     / **${message.author.id}**\nMesaj: **${message.content}**`);
+//        client.channels.cache.get("1077616627211833345").send(`Sıra numarası: **${messageCounter}**\nGönderen: **${message.author.tag}.     / **${message.author.id}**\nMesaj: **${message.content}**`);
 //        message.author.send(`Mesajınız yetkili ekibine iletildi, lütfen sıra numaranızı saklayın. **${messageCounter}**`);
 //    }
-//
+///
 //    if (message.content.startsWith("!yanıtla")) {
-//        let args = message.content.split(" ");
+//       let args = message.content.split(" ");
 //        let messageNum = parseInt(args[1]);
-//        let response = args.slice(2).join(" ");
-//        if (!response) return message.channel.send("Lütfen geçerli bir yanıt yazın.");
+ ///       let response = args.slice(2).join(" ");        if (!response) return message.channel.send("Lütfen geçerli bir yanıt yazın.");
 //        if (!messageLog.has(messageNum)) return message.channel.send("Geçersiz sıra numarası.");
-//
-//        let targetUser = messageLog.get(messageNum).author;
+///
+///        let targetUser = messageLog.get(messageNum).author;
 //        targetUser.send(`Yanıtlayan Yetkili: **${message.author.username}**\nSıra numarası: **${messageNum}**\nYetkili Kişinin Yanıtı: **${response}**`);
-//        message.channel.send(`Yanıt iletildi ${message.author.username}!\n`);
+///        message.channel.send(`Yanıt iletildi ${message.author.username}!\n`);
 //    }
 //});
 /// SORU CVP
@@ -1456,59 +1454,34 @@ client.on('message', async (message) => {
 /// DEPREM
 
 /// HABER
-const newsSources = [
-  { name: 'BBC', url: 'https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=83ed536e58b14c76b7b185686e0e4023' },
-  { name: 'CNN', url: 'https://newsapi.org/v2/top-headlines?sources=cnn&apiKey=83ed536e58b14c76b7b185686e0e4023' },
-  { name: 'Reuters', url: 'https://newsapi.org/v2/top-headlines?sources=reuters&apiKey=83ed536e58b14c76b7b185686e0e4023' },
-  //{ name: 'Turkey News', url: 'https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=83ed536e58b14c76b7b185686e0e4023' },
-  // Ek kaynaklar ekleyebilirsiniz
-];
+client.on('message', async (message) => {
+  if (message.author.bot || !message.content.startsWith(prefix)) return;
 
-const getRandomNews = async () => {
-  const randomSource = newsSources[Math.floor(Math.random() * newsSources.length)];
-  
-  try {
-    const response = await axios.get(randomSource.url);
-    const articles = response.data.articles;
-    
-    const randomArticle = articles[Math.floor(Math.random() * articles.length)];
-    
-    return {
-      source: randomSource.name,
-      title: randomArticle.title,
-      description: randomArticle.description,
-      url: randomArticle.url,
-    };
-  } catch (error) {
-    console.error('Haber getirilirken bir hata oluştu:', error.message);
-    return null;
-  }
-};
+  const args = message.content.slice(prefix.length).trim().split(' ');
+  const command = args.shift().toLowerCase();
 
-module.exports = {
-  name: 'haber',
-  description: 'Rastgele bir haber getirir.',
-  execute(message) {
-    getRandomNews()
-      .then(news => {
-        if (news) {
-          const embed = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle(`[${news.source}] ${news.title}`)
-            .setDescription(news.description)
-            .setURL(news.url);
+  if (command === 'haberler') {
+    try {
+      const response = await axios.get('https://newsapi.org/v2/top-headlines?country=tr&apiKey=83ed536e58b14c76b7b185686e0e4023');
+      const articles = response.data.articles.slice(0, 5); // İlk 5 haberi al
 
-          message.channel.send(embed);
-        } else {
-          message.channel.send('Haber getirilirken bir hata oluştu.');
-        }
-      })
-      .catch(error => {
-        console.error('Haber getirilirken bir hata oluştu:', error.message);
-        message.channel.send('Haber getirilirken bir hata oluştu.');
+      const embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle('Rasgele Haberler')
+        .setDescription('İşte güncel haberler:')
+        .setTimestamp();
+
+      articles.forEach((article, index) => {
+        embed.addField(`${index + 1}. ${article.title}`, `${article.description}\n[Devamını Oku](${article.url})`);
       });
-  },
-};
+
+      message.channel.send(embed);
+    } catch (error) {
+      console.error('Haberleri alma sırasında bir hata oluştu:', error);
+      message.channel.send('Haberleri alırken bir hata oluştu.');
+    }
+  }
+});
 /// HABER
 
 // Botu her belirli bir süre (örneğin, 30 dakika) sonra tekrar başlatmak için setInterval kullanın
